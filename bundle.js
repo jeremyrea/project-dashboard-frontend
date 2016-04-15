@@ -2531,6 +2531,7 @@
 	 */
 	var EventInterface = {
 	  type: null,
+	  target: null,
 	  // currentTarget is set when dispatching; no use in copying it here
 	  currentTarget: emptyFunction.thatReturnsNull,
 	  eventPhase: null,
@@ -2564,8 +2565,6 @@
 	  this.dispatchConfig = dispatchConfig;
 	  this.dispatchMarker = dispatchMarker;
 	  this.nativeEvent = nativeEvent;
-	  this.target = nativeEventTarget;
-	  this.currentTarget = nativeEventTarget;
 	
 	  var Interface = this.constructor.Interface;
 	  for (var propName in Interface) {
@@ -2576,7 +2575,11 @@
 	    if (normalize) {
 	      this[propName] = normalize(nativeEvent);
 	    } else {
-	      this[propName] = nativeEvent[propName];
+	      if (propName === 'target') {
+	        this.target = nativeEventTarget;
+	      } else {
+	        this[propName] = nativeEvent[propName];
+	      }
 	    }
 	  }
 	
@@ -5594,7 +5597,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.6';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 43 */
@@ -7194,7 +7197,7 @@
 	
 			if( !update ){
 				for( var key in attrs ){
-					update = update || this[ key ] != attrs[ key ];
+					update = update || this[ key ] !== attrs[ key ];
 				}
 	
 				// No changes, just return the node
@@ -9859,6 +9862,10 @@
 	  }
 	};
 	
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+	
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -9867,7 +9874,7 @@
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -11075,11 +11082,11 @@
 
 	'use strict';
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(34);
 	
@@ -11131,9 +11138,11 @@
 	if (queryString["server"]) {
 	  projectsSetter = function projectsSetter() {
 	    (0, _reqwest2.default)({
-	      url: queryString["server"] + "/projects",
-	      method: 'get',
+	      //        url: queryString["server"] + "/projects"
+	      url: "0.0.0.0:1357/projects",
+	      method: 'post',
 	      type: 'json',
+	      data: { "id": "Jeremy" },
 	      success: function success(resp) {
 	        console.log(resp);
 	        freezer.get().set("projects", resp);
@@ -11191,11 +11200,11 @@
 
 	"use strict";
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(34);
 	
@@ -11224,6 +11233,7 @@
 	      var project = this.props.project;
 	      var contributors = project.contributors || [];
 	      var languages = project.languages || {};
+	      var openIssues = project.openIssues || project.open_issues || [];
 	
 	      var open_issues_count = project.openIssues ? project.openIssues.length : project["open_issues_count"];
 	
@@ -11245,6 +11255,28 @@
 	          { href: project.html_url + "/issues", className: obj.cn + " p2 rounded col-5" },
 	          obj.txt
 	        );
+	      }();
+	
+	      var openIssueSection = function (props) {
+	        if (open_issues_count === 0) {
+	          return "No open issue.";
+	        }
+	        return openIssues.map(function (issue) {
+	          return _react2.default.createElement(
+	            "div",
+	            null,
+	            " ",
+	            _react2.default.createElement(
+	              "a",
+	              { href: issue.html_url },
+	              " # ",
+	              issue.id || '',
+	              ": ",
+	              issue.title,
+	              " "
+	            )
+	          );
+	        });
 	      }();
 	
 	      return _react2.default.createElement(
@@ -11296,7 +11328,8 @@
 	              )
 	            );
 	          })
-	        )
+	        ),
+	        openIssueSection
 	      );
 	    }
 	  }]);
@@ -11305,6 +11338,7 @@
 	}(_react2.default.Component);
 	
 	exports.default = Project;
+	
 	
 	Project.propTypes = {
 	  project: _react2.default.PropTypes.object.isRequired
@@ -11316,11 +11350,11 @@
 
 	'use strict';
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(34);
 	
@@ -11367,6 +11401,7 @@
 	}(_react2.default.Component);
 	
 	exports.default = ProjectList;
+	
 	
 	ProjectList.propTypes = {
 	  projects: _react2.default.PropTypes.array
@@ -12409,13 +12444,7 @@
 				_.listener.trigger( 'immediate', node, frozen );
 			}
 			for (var i = _.parents.length - 1; i >= 0; i--) {
-				if( i == 0 ){
 					this.refresh( _.parents[i], node, frozen );
-				}
-				else{
-	
-					this.markDirty( _.parents[i], [node, frozen] );
-				}
 			}
 			return frozen;
 		},
@@ -17515,7 +17544,10 @@
 	      }
 	    });
 	
-	    nativeProps.children = content;
+	    if (content) {
+	      nativeProps.children = content;
+	    }
+	
 	    return nativeProps;
 	  }
 	

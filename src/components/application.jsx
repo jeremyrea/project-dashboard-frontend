@@ -21,9 +21,11 @@ var projectsSetter = () => {
 if(queryString["server"]){
   projectsSetter = () => {
     reqwest({
-        url: queryString["server"] + "/projects"
-      , method: 'get'
+//        url: queryString["server"] + "/projects"
+		url: "0.0.0.0:1357/projects"
+      , method: 'post'
       ,type: 'json'
+	,data: {"id" : "Jeremy"}	
       , success: resp => {
           console.log(resp)
           freezer.get().set("projects", resp)
