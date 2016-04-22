@@ -11200,14 +11200,14 @@
 				) : _react2.default.createElement(
 					'div',
 					{ style: { "position": "absolute", "top": "50%", "left": "50%", "-webkit-transform": "translate(-50%, -50%)", "transform": "translate(-50%, -50%)" } },
-					_react2.default.createElement('input', { type: 'text', name: 'login', placeholder: 'Username', onChange: this._handleChange.bind(this, 'login') }),
+					_react2.default.createElement('input', { type: 'text', style: { "margin": "10px auto 0px auto" }, name: 'login', placeholder: 'Username', onChange: this._handleChange.bind(this, 'login') }),
 					_react2.default.createElement('br', null),
-					_react2.default.createElement('input', { type: 'password', name: 'password', placeholder: 'Password', onChange: this._handleChange.bind(this, 'password') }),
+					_react2.default.createElement('input', { type: 'password', style: { "margin": "10px auto 0px auto" }, name: 'password', placeholder: 'Password', onChange: this._handleChange.bind(this, 'password') }),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						'button',
-						{ onClick: this._onButtonClick, style: { "height": "40px", "width": "190px", "border-radius": "5px", "font-weight": "bold", "left": "50%" } },
+						{ onClick: this._onButtonClick, style: { "height": "40px", "border-radius": "5px", "font-weight": "bold", "padding": "10px 20px", "display": "block", "width": "130px", "margin": "10px auto 0px auto" } },
 						'Login'
 					)
 				);
