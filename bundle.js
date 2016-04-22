@@ -11083,11 +11083,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-<<<<<<< HEAD
 		value: true
-=======
-	  value: true
->>>>>>> a3e0b49aa502e633971a673f4a96097968309537
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11132,7 +11128,6 @@
 	
 	var queryString = {};
 	if (window.location.search !== "") {
-<<<<<<< HEAD
 		queryString = _querystringparser2.default.parse(window.location.search.substr(1));
 	}
 	
@@ -11220,68 +11215,6 @@
 		}]);
 	
 		return Application;
-=======
-	  queryString = _querystringparser2.default.parse(window.location.search.substr(1));
-	}
-	
-	var projectsSetter = function projectsSetter() {
-	  freezer.get().set("projects", _exampleprojectsdata2.default);
-	};
-	
-	if (queryString["server"]) {
-	  projectsSetter = function projectsSetter() {
-	    (0, _reqwest2.default)({
-	      url: queryString["server"] + "/projects",
-	      method: 'get',
-	      type: 'json',
-	      success: function success(resp) {
-	        console.log(resp);
-	        freezer.get().set("projects", resp);
-	      }
-	    });
-	  };
-	}
-	projectsSetter();
-	
-	window.freezer = freezer;
-	
-	var Application = function (_React$Component) {
-	  _inherits(Application, _React$Component);
-	
-	  function Application() {
-	    _classCallCheck(this, Application);
-	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Application).apply(this, arguments));
-	  }
-	
-	  _createClass(Application, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-	
-	      freezer.on('update', function (newvalue) {
-	        return _this2.forceUpdate();
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var state = freezer.get();
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          state.title
-	        ),
-	        _react2.default.createElement(_projectlist2.default, { projects: state.projects })
-	      );
-	    }
-	  }]);
-	
-	  return Application;
->>>>>>> a3e0b49aa502e633971a673f4a96097968309537
 	}(_react2.default.Component);
 	
 	exports.default = Application;
@@ -11360,20 +11293,11 @@
 	            " ",
 	            _react2.default.createElement(
 	              "a",
-<<<<<<< HEAD
 	              { href: issue.html_url, title: issue.body, alt: issue.body },
 	              " # ",
 	              issue.id || '',
 	              ": ",
 	              issue.title
-=======
-	              { href: issue.html_url },
-	              " # ",
-	              issue.id || '',
-	              ": ",
-	              issue.title,
-	              " "
->>>>>>> a3e0b49aa502e633971a673f4a96097968309537
 	            )
 	          );
 	        });
@@ -11387,11 +11311,7 @@
 	          { className: "col-12 border-bottom py1 px2" },
 	          _react2.default.createElement(
 	            "a",
-<<<<<<< HEAD
 	            { className: "white", href: "https://github.com/" + project.name, target: "_blank" },
-=======
-	            { className: "white", href: project.html_url },
->>>>>>> a3e0b49aa502e633971a673f4a96097968309537
 	            project.name
 	          )
 	        ),
@@ -11422,18 +11342,13 @@
 	          "ul",
 	          { className: "col-12 list-style-none flex flex-wrap jc-space-between p0 m0" },
 	          contributors.map(function (contributor) {
-<<<<<<< HEAD
 	            if (contributor.contributions >= 100) return _react2.default.createElement(
-=======
-	            return _react2.default.createElement(
->>>>>>> a3e0b49aa502e633971a673f4a96097968309537
 	              "li",
 	              { className: "p2", key: contributor.login },
 	              _react2.default.createElement(
 	                "a",
 	                { href: contributor.html_url },
 	                _react2.default.createElement("img", { height: "48px", width: "48px", src: contributor.avatar_url, alt: contributor.login })
-<<<<<<< HEAD
 	              ),
 	              _react2.default.createElement(
 	                "p",
@@ -11468,8 +11383,6 @@
 	                {
 	                  className: "contributionsPetit" },
 	                contributor.contributions
-=======
->>>>>>> a3e0b49aa502e633971a673f4a96097968309537
 	              )
 	            );
 	          })
