@@ -34,13 +34,13 @@ export default class Project extends React.Component{
         if(open_issues_count === 0){
             return "No open issue.";
         }
-        return openIssues.map((issue) => (<div> <a href={issue.html_url} title={issue.body} alt={issue.body}> # {issue.id || ''}: {issue.title}</a></div>))
+        return openIssues.map((issue) => (<div> <a href={issue.html_url}> # {issue.id || ''}: {issue.title} </a></div>))
 
     })();
 
     return (<div className="sm-col-6 lg-col-4 border-box flex flex-stretch flex-wrap bg-dgray radius m2 ac-flex-start">
               <div className="col-12 border-bottom py1 px2">
-                <a className="white" href={"https://github.com/"+project.name} target="_blank">{project.name}</a>
+                <a className="white" href={project.html_url}>{project.name}</a>
               </div>
               <div className="col-12 flex p2 flex-jc-space-around">
                 { openIssuesCountSection }
@@ -53,15 +53,7 @@ export default class Project extends React.Component{
               <div className="border-bottom">Contributors</div>
               <ul className="col-12 list-style-none flex flex-wrap jc-space-between p0 m0">
               {contributors.map( (contributor) => {
-                  if(contributor.contributions >= 100)
-                      return <li className="p2" key={contributor.login}><a href={contributor.html_url}><img height="48px" width="48px" src={contributor.avatar_url} alt={contributor.login}/></a><p
-                    className="contributionsGrand">{contributor.contributions}</p></li>
-                  else if (contributor.contributions >= 10)
-                      return <li className="p2" key={contributor.login}><a href={contributor.html_url}><img height="48px" width="48px" src={contributor.avatar_url} alt={contributor.login}/></a><p
-                          className="contributions">{contributor.contributions}</p></li>
-                  else
-                      return <li className="p2" key={contributor.login}><a href={contributor.html_url}><img height="48px" width="48px" src={contributor.avatar_url} alt={contributor.login}/></a><p
-                          className="contributionsPetit">{contributor.contributions}</p></li>
+                return <li className="p2" key={contributor.login}><a href={contributor.html_url}><img height="48px" width="48px" src={contributor.avatar_url} alt={contributor.login}/></a></li>
               })}
               </ul>
             {openIssueSection}

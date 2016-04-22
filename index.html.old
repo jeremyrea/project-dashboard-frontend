@@ -27,39 +27,6 @@
     .list-style-none{
       list-style-type: none;
     }
-
-    .contributions {
-      margin-top: -19px;
-      margin-left: 39px;
-      background-color: red;
-      border-radius: 50%;
-      width: 21px;
-      height: 21px;
-      position: absolute;
-    }
-
-    .contributionsPetit {
-      margin-top: -17px;
-      margin-left: 39px;
-      background-color: red;
-      border-radius: 50%;
-      position: absolute;
-      width: 15px;
-      height: 19px;
-      padding-left: 4px;
-    }
-
-    .contributionsGrand {
-      margin-top: -19px;
-      margin-left: 35px;
-      background-color: red;
-      border-radius: 50%;
-      position: absolute;
-      width: 30px;
-      height: 28px;
-      padding-top: 2px;
-    }
-
     .jc-center{justify-content: center;}
     .ai-center{align-items: center;}
     .bg-black{background-color:#0e191e;}

@@ -11083,7 +11083,7 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11128,68 +11128,93 @@
 	
 	var queryString = {};
 	if (window.location.search !== "") {
-	  queryString = _querystringparser2.default.parse(window.location.search.substr(1));
+		queryString = _querystringparser2.default.parse(window.location.search.substr(1));
 	}
-	
-	var projectsSetter = function projectsSetter() {
-	  freezer.get().set("projects", _exampleprojectsdata2.default);
-	};
-	
-	if (queryString["server"]) {
-	  projectsSetter = function projectsSetter() {
-	    (0, _reqwest2.default)({
-	      //        url: queryString["server"] + "/projects"
-	      url: "0.0.0.0:1357/projects",
-	      method: 'post',
-	      type: 'json',
-	      data: { "id": "Jeremy" },
-	      success: function success(resp) {
-	        console.log(resp);
-	        freezer.get().set("projects", resp);
-	      }
-	    });
-	  };
-	}
-	projectsSetter();
 	
 	window.freezer = freezer;
 	
 	var Application = function (_React$Component) {
-	  _inherits(Application, _React$Component);
+		_inherits(Application, _React$Component);
 	
-	  function Application() {
-	    _classCallCheck(this, Application);
+		function Application(props) {
+			_classCallCheck(this, Application);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Application).apply(this, arguments));
-	  }
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Application).call(this, props));
 	
-	  _createClass(Application, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
+			_this.state = { projects: null,
+				showComponent: false,
+				login: '',
+				password: ''
+			};
+			_this._onButtonClick = _this._onButtonClick.bind(_this);
+			return _this;
+		}
 	
-	      freezer.on('update', function (newvalue) {
-	        return _this2.forceUpdate();
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var state = freezer.get();
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          state.title
-	        ),
-	        _react2.default.createElement(_projectlist2.default, { projects: state.projects })
-	      );
-	    }
-	  }]);
+		_createClass(Application, [{
+			key: '_onButtonClick',
+			value: function _onButtonClick() {
+				this.setState({
+					projects: (0, _reqwest2.default)({
+						url: queryString["server"] + "/projects",
+						method: 'post',
+						type: 'json',
+						contentType: 'application/json',
+						data: JSON.stringify({ login: this.state.login,
+							password: this.state.password }),
+						success: function success(resp) {
+							console.log(resp);
+							freezer.get().set("projects", resp);
+						}
+					}),
+					showComponent: true
+				});
+			}
+		}, {
+			key: '_handleChange',
+			value: function _handleChange(name, e) {
+				var change = {};
+				change[name] = e.target.value;
+				this.setState(change);
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this2 = this;
 	
-	  return Application;
+				freezer.on('update', function (newvalue) {
+					return _this2.forceUpdate();
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return this.state.showComponent ? _react2.default.createElement(
+					'div',
+					{ className: 'container' },
+					_react2.default.createElement(
+						'h1',
+						null,
+						freezer.get()['title']
+					),
+					_react2.default.createElement(_projectlist2.default, { projects: freezer.get()['projects'] })
+				) : _react2.default.createElement(
+					'div',
+					{ style: { "position": "absolute", "top": "50%", "left": "50%", "-webkit-transform": "translate(-50%, -50%)", "transform": "translate(-50%, -50%)" } },
+					_react2.default.createElement('input', { type: 'text', name: 'login', placeholder: 'Username', onChange: this._handleChange.bind(this, 'login') }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('input', { type: 'password', name: 'password', placeholder: 'Password', onChange: this._handleChange.bind(this, 'password') }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'button',
+						{ onClick: this._onButtonClick, style: { "height": "40px", "width": "190px", "border-radius": "5px", "font-weight": "bold" } },
+						'Login'
+					)
+				);
+			}
+		}]);
+	
+		return Application;
 	}(_react2.default.Component);
 	
 	exports.default = Application;
@@ -11268,12 +11293,11 @@
 	            " ",
 	            _react2.default.createElement(
 	              "a",
-	              { href: issue.html_url },
+	              { href: issue.html_url, title: issue.body, alt: issue.body },
 	              " # ",
 	              issue.id || '',
 	              ": ",
-	              issue.title,
-	              " "
+	              issue.title
 	            )
 	          );
 	        });
@@ -11287,7 +11311,7 @@
 	          { className: "col-12 border-bottom py1 px2" },
 	          _react2.default.createElement(
 	            "a",
-	            { className: "white", href: project.html_url },
+	            { className: "white", href: "https://github.com/" + project.name, target: "_blank" },
 	            project.name
 	          )
 	        ),
@@ -11318,13 +11342,47 @@
 	          "ul",
 	          { className: "col-12 list-style-none flex flex-wrap jc-space-between p0 m0" },
 	          contributors.map(function (contributor) {
-	            return _react2.default.createElement(
+	            if (contributor.contributions >= 100) return _react2.default.createElement(
 	              "li",
 	              { className: "p2", key: contributor.login },
 	              _react2.default.createElement(
 	                "a",
 	                { href: contributor.html_url },
 	                _react2.default.createElement("img", { height: "48px", width: "48px", src: contributor.avatar_url, alt: contributor.login })
+	              ),
+	              _react2.default.createElement(
+	                "p",
+	                {
+	                  className: "contributionsGrand" },
+	                contributor.contributions
+	              )
+	            );else if (contributor.contributions >= 10) return _react2.default.createElement(
+	              "li",
+	              { className: "p2", key: contributor.login },
+	              _react2.default.createElement(
+	                "a",
+	                { href: contributor.html_url },
+	                _react2.default.createElement("img", { height: "48px", width: "48px", src: contributor.avatar_url, alt: contributor.login })
+	              ),
+	              _react2.default.createElement(
+	                "p",
+	                {
+	                  className: "contributions" },
+	                contributor.contributions
+	              )
+	            );else return _react2.default.createElement(
+	              "li",
+	              { className: "p2", key: contributor.login },
+	              _react2.default.createElement(
+	                "a",
+	                { href: contributor.html_url },
+	                _react2.default.createElement("img", { height: "48px", width: "48px", src: contributor.avatar_url, alt: contributor.login })
+	              ),
+	              _react2.default.createElement(
+	                "p",
+	                {
+	                  className: "contributionsPetit" },
+	                contributor.contributions
 	              )
 	            );
 	          })
