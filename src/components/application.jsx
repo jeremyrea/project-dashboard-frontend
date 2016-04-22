@@ -62,9 +62,9 @@ export default class Application extends React.Component{
 				<ProjectList projects={freezer.get()['projects']}/>
 			</div> :
 	   		<div style={{"position": "absolute", "top": "50%", "left": "50%", "-webkit-transform": "translate(-50%, -50%)", "transform": "translate(-50%, -50%)"}}>
-					<input type="text" style={{"margin": "10px auto 0px auto"}} name="login" placeholder="Username" onChange={this._handleChange.bind(this, 'login')} /><br></br>
-					<input type="password" style={{"margin": "10px auto 0px auto"}} name="password" placeholder="Password" onChange={this._handleChange.bind(this, 'password')}/><br></br><br></br>
-					<button onClick={this._onButtonClick} style={{"height": "40px", "border-radius": "5px", "font-weight": "bold", "padding": "10px 20px", "display": "block", "width": "130px", "margin": "10px auto 0px auto"}}>Login</button>
+					<input type="text" name="login" placeholder="Username" onChange={this._handleChange.bind(this, 'login')} /><br></br>
+					<input type="password" name="password" placeholder="Password" onChange={this._handleChange.bind(this, 'password')}/><br></br><br></br>
+					<button onClick={this._onButtonClick} style={{"height": "40px", "width": "190px", "border-radius": "5px", "font-weight": "bold"}}>Login</button>
 			</div>
         );
 	}
