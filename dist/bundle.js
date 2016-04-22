@@ -11207,7 +11207,7 @@
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						'button',
-						{ onClick: this._onButtonClick, style: { "height": "40px", "width": "190px", "border-radius": "5px", "font-weight": "bold" } },
+						{ onClick: this._onButtonClick, style: { "height": "40px", "width": "190px", "border-radius": "5px", "font-weight": "bold", "left": "50%" } },
 						'Login'
 					)
 				);
